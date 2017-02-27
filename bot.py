@@ -6,24 +6,26 @@ import requests
 import logging
 import telebot
 from time import sleep
-SINGLE_RUN = 0
- # Каждый раз получаем по 10 последних записей со стены
+
+# Каждый раз получаем по 10 последних записей со стены
 URL_VK = 'https://api.vk.com/method/wall.get?domain=kaspercareer&count=10&filter=owner'
 BOT_TOKEN = '349421716:AAECbgHPZrUU0E6XMhTR3q-DnbwtYliPDYY'
 FILENAME_VK = 'last_known_id.txt'
-bot = telebot.TeleBot(BOT_TOKEN)
 BASE_POST_URL = 'https://vk.com/wall-98006063_'
+SINGLE_RUN = 0
 
+bot = telebot.TeleBot(BOT_TOKEN)
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-	#f = open('chats.txt')
-	#text = f.read()
-	#if not str(message.chat.id) in text:
-	bot.send_message(message.chat.id,"ЛК — это:\n— 37 офисов на всех континентах и штаб-квартира в Москве;\n — 400 000 000 пользователей и 270 000 корпоративных клиентов во всех странах мира;\n — Круглосуточный мониторинг вирусной активности в четырех вирусных лабораториях в России, Китае, Великобритании и США;\n — Больше 3000 специалистов, треть из которых постоянно работает над более чем шести десятками уникальных программных решений для большинства существующих платформ;\n — Более 325 000 новых вредоносных программ, обнаруживаемых каждые 24 часа.\n — Своя атмосфера, в которой интересно и приятно работать.\nНаша группа ВК - https://vk.com/kaspercareer")
-	f = open('chats.txt', 'a')
-	f.write(str(message.chat.id)+"\n")
-	#else:
-	#	bot.send_message(message.chat.id, "Вы уже подписались на нашу рассылку")
+	f = open('chats.txt')
+	text = f.read()
+	if not str(message.chat.id) in text:
+		#print('here')
+		bot.send_message(message.chat.id,"ЛК — это:\n— 37 офисов на всех континентах и штаб-квартира в Москве;\n — 400 000 000 пользователей и 270 000 корпоративных клиентов во всех странах мира;\n — Круглосуточный мониторинг вирусной активности в четырех вирусных лабораториях в России, Китае, Великобритании и США;\n — Больше 3000 специалистов, треть из которых постоянно работает над более чем шести десятками уникальных программных решений для большинства существующих платформ;\n — Более 325 000 новых вредоносных программ, обнаруживаемых каждые 24 часа.\n — Своя атмосфера, в которой интересно и приятно работать.\nНаша группа ВК - https://vk.com/kaspercareer")
+		f = open('chats.txt', 'a')
+		f.write(str(message.chat.id)+"\n")
+	else:
+		bot.send_message(message.chat.id, "Вы уже подписались на нашу рассылку")
 	f.close()
 
 def get_data():
@@ -93,6 +95,7 @@ if __name__ == '__main__':
     # Настраиваем наш логгер
     logging.basicConfig(format='[%(asctime)s] %(filename)s:%(lineno)d %(levelname)s - %(message)s', level=logging.INFO,
                         filename='bot_log.log', datefmt='%d.%m.%Y %H:%M:%S')
+    
     if not SINGLE_RUN:
         while True:
             check_new_posts_vk()

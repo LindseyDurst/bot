@@ -28,6 +28,11 @@ def send_welcome(message):
 		bot.send_message(message.chat.id, "Вы уже подписались на нашу рассылку")
 	f.close()
 
+@bot.message_handler(commands=['update'])
+def update_handle(message):
+	#bot.send_message(message.chat.id, "bla yourself")
+	check_new_posts_vk()
+
 def get_data():
     timeout = eventlet.Timeout(10)
     try:
@@ -87,6 +92,7 @@ def check_new_posts_vk():
         logging.error('Exception of type {!s} in check_new_post(): {!s}'.format(type(ex).__name__, str(ex)))
         pass
     logging.info('[VK] Finished scanning')
+    if
     return
 
 if __name__ == '__main__':
@@ -95,7 +101,7 @@ if __name__ == '__main__':
     # Настраиваем наш логгер
     logging.basicConfig(format='[%(asctime)s] %(filename)s:%(lineno)d %(levelname)s - %(message)s', level=logging.INFO,
                         filename='bot_log.log', datefmt='%d.%m.%Y %H:%M:%S')
-    
+    bot.polling(none_stop=False, interval=0)
     if not SINGLE_RUN:
         while True:
             check_new_posts_vk()
